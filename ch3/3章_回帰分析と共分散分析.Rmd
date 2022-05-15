@@ -31,5 +31,26 @@ confint関数を使って95%信頼区間を表示する。
 ```{r}
 confint(model, level = 0.95)
 ```
-t1の信頼区間は8.91〜10.72で、
+t1の信頼区間は8.91〜10.72で、平均処置効果は9.82のため、無視可能な割付けであれば、共変量に条件付けることで、平均処置効果が適切に推定できている。
+
+# 散布図
+```{r}
+plot(x1[t1==0], y3[t1==0], xlim=c(60, 100), ylim=c(60, 100), pch=4)
+par(new=TRUE)
+plot(x1[t1==1], y3[t1==1], xlim=c(60, 100), ylim=c(60, 100), pch=2)
+b0 <- summary(model)$coefficient[1]
+b1 <- summary(model)$coefficient[2]
+b2 <- summary(model)$coefficient[3]
+abline(a=b0, b=b1)
+abline(a=b0 + b2, b=b1)
+```
+```{r}
+library(tidyverse)
+ggplot() +
+  geom_point(data = d, mapping = aes(x=x1, y=y3, shape=factor(t1))) +
+  geom_smooth(data = d, mapping = aes(x=x1, y=y3, group=factor(t1)), method = "lm") +
+  theme_gray(base_family = "HiraginoSans-W3") +
+  labs(x="入学試験", y="期末試験", shape="処置の有無")
+
+```
 
