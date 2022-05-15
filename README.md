@@ -6,8 +6,8 @@
 
 [コード](https://github.com/akiabe/CausalityBook/tree/main/src)
 
-#### 2章　潜在的結果変数の枠組み
-#### 3章　統計的因果推論における重要な仮定
+#### 2章　[潜在的結果変数の枠組み](https://github.com/akiabe/CausalityBook/tree/main/ch2)
+#### 3章　[統計的因果推論における重要な仮定](https://github.com/akiabe/CausalityBook/tree/main/ch3)
 #### 4章　推測統計の基礎：標準誤差と信頼区間
 #### 5章　回帰分析の基礎
 #### 6章　図で理解する重回帰モデルの基礎
