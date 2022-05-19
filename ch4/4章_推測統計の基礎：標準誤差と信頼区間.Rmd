@@ -1,0 +1,119 @@
+---
+title: "4章_推測統計の基礎：標準誤差と信頼区間"
+output: html_document
+date: '2022-05-15'
+---
+# 母数の集計
+$$
+  \mu = \frac{1}{N} \sum_{i=1}^N X_i \\
+  \sigma = \sqrt {\frac{1}{N} \sum_{i=1}^N (X_i - \mu)^2}
+$$
+```{r}
+rm(list = ls())
+N1 <- 4; n1 <- 2
+x1 <- c(165, 166, 171, 180)
+mu <- mean(x1)　# 母平均
+hensa <- x1 - mu
+hensa2 <- hensa^2
+sigma2 <- sum(hensa2)/N1　# 母分散
+sigma <- sqrt(sigma2)　# 標準偏差
+```
+
+```{r}
+mu
+```
+
+```{r}
+sigma
+```
+
+# 標本サイズ2の全ての標本の抽出
+```{r}
+xs <- combn(x1, n1)　　　　 # combn関数を用いて、x1から標本サイズn1の標本を抽出
+xs
+```
+
+```{r}
+xbars <- apply(xs, 2, mean) # apply関数を使ってそれぞれの列の平均値を計算
+xbars
+```
+
+```{r}
+mean(xbars)　# 標本平均
+```
+
+```{r}
+hensab <- xbars - mu　　　 # 偏差（標本平均と母平均との差）を計算
+hensa2b <- hensab^2　　　  # 偏差の二乗を計算
+sigma2b <- sum(hensa2b)/6  # 分散を計算
+sigmab <- sqrt(sigma2b)    # 標準偏差を計算
+sigmab
+```
+
+# 有限母集団の標準誤差の計算
+$$
+  \frac{\sigma}{\sqrt{n}} \sqrt{\frac{N-n}{N-1}}
+$$
+
+```{r}
+se0 <- sigma / sqrt(n1)
+correct <- sqrt((N1 - n1) / (N1 - 1))  
+se1 <- se0 * correct
+se1
+```
+
+# t統計量の計算
+自由度$df$の$t$分布の上側確率$\alpha$のパーセント点$t_{\alpha}(df)$は、qt関数を用いて算出することができる。
+```{r}
+# qt(p, df, lower.tail = FALSE)
+qt(0.025, 80-1, lower.tail = FALSE)
+qt(0.975, 80-1)
+```
+qt関数の一つ目の引数pは、t分布における片側のすそに該当する有意水準$\alpha$であり、有意水準が5%であれば両側$2 \alpha = 0.05$なので、片側$\alpha = 0.025$である。二つ目の引数dfは自由度$df$で、$n - k$（$k$は推定すべきパラメータの個数）を表す。上側確率を計算するため、lower.tail=FALSEとする。
+
+# 対応のある2標本t検定
+2つの標本に対応がある場合のt検定は、本質的には1標本t検定と同じで、2つの変数の差をとったものを1つの変数とみなして、1標本t検定を実行する。
+
+### データの読込み
+```{r}
+rm(list = ls())
+d <- read.csv("data04.csv")
+head(d)
+```
+```{r}
+attach(d)
+```
+
+### 対応のある2標本t検定
+```{r}
+n <- nrow(d)　　　 # 標本サイズ
+diff <- y1t - y0t　# 2つの変数の差
+m <- mean(diff)　　# diffの平均値
+s <- sd(diff)      # diffの標本標準偏差
+talpha <- qt(0.025, n-1, lower.tail = FALSE)  # 95%信頼係数
+```
+
+標本平均の信頼区間を以下より計算する。
+$$
+  \bar X \pm t_{\alpha}(df) \times \frac{s}{\sqrt n}
+$$
+手作業で計算する場合
+```{r}
+m + talpha * s/sqrt(n)  # 95%信頼区間の上限
+m - talpha * s/sqrt(n)　# 95%信頼区間の下限
+```
+
+R関数t.testで計算する場合
+```{r}
+t.test(diff)　# t検定
+```
+95%信頼区間が0を含んでいないため、5%の有意水準で2つの変数の差に差があると判断できる。
+
+# 対応のない2標本t検定（Welchの検定）
+```{r}
+y0obs <- na.omit(y0) 　# 欠損値の削除
+y1obs <- na.omit(y1)
+t.test(y1obs, y0obs, var.equal=FALSE)　# t検定
+```
+95%信頼区間が0を含んでいないため、5%の有意水準で2つの変数の差に差があると判断できる。
+
