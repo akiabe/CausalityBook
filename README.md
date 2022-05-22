@@ -8,9 +8,9 @@
 
 #### 2章　[潜在的結果変数の枠組み](https://github.com/akiabe/CausalityBook/tree/main/ch2)
 #### 3章　[統計的因果推論における重要な仮定](https://github.com/akiabe/CausalityBook/tree/main/ch3)
-#### 4章　推測統計の基礎：標準誤差と信頼区間
+#### 4章　[推測統計の基礎：標準誤差と信頼区間](https://github.com/akiabe/CausalityBook/tree/main/ch4)
 #### 5章　回帰分析の基礎
-#### 6章　図で理解する重回帰モデルの基礎
+#### 6章　[図で理解する重回帰モデルの基礎](https://github.com/akiabe/CausalityBook/tree/main/ch6)
 #### 7章　最小二乗法による重回帰モデルの仮定と診断1
 #### 8章　最小二乗法による重回帰モデルの仮定と診断2
 #### 9章　交互作用項のある共分散分析
